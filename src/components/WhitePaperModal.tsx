@@ -5,6 +5,7 @@ import { generateImage } from '@/utils/dalleAPI';
 import Image from 'next/image';
 import { generateText } from '../utils/openaiAPI';
 import {PROMPT_EXAMPLE} from '../constants/promts.constant'
+import { infoAlert, successAlert } from './Alert';
 
 interface ModalProps {
     show: boolean;
@@ -128,7 +129,7 @@ const WhitePaperModal: React.FC<ModalProps> = ({ show, onClose }) => {
       wpData.push(JSON.stringify(contentListItems))  
     //   console.log(wpData)
       onClose();
-      alert("Successfuly saved!")
+      successAlert("Successfully saved!")
     };
 
     // Function to generate the whitepaper
@@ -177,7 +178,7 @@ const WhitePaperModal: React.FC<ModalProps> = ({ show, onClose }) => {
           setSectionListItems(result.sections);
           setContentListItems(result.contents);
         } catch (error) {
-          alert("Gpt api is not working well. please generate again.")
+          infoAlert("Gpt api is not working well. please generate again.")
         }
 
         setSpinner(false)

@@ -76,4 +76,11 @@ export const deleteData = async (id: number) => {
     .from('test_projects')
     .delete()
     .eq('id', id)
+    .then((res) => {
+      if(res.status === 204){
+        return true;
+      }else{
+        return false;
+      }
+    })
 };

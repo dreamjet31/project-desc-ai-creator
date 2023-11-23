@@ -5,6 +5,7 @@ import DropdownComponent from './dropdownComponent';
 import { generateText } from '../utils/openaiAPI';
 import { generateImage } from '@/utils/dalleAPI';
 import Image from 'next/image';
+import { infoAlert, successAlert } from './Alert';
 
 interface LogoCreateModalProps {
     show: boolean;
@@ -39,10 +40,7 @@ const LogoCreateModal: React.FC<LogoCreateModalProps> = ({ show, onClose }) => {
     const [logoFamousName, setLogoFamousName] = useState<string>("");
     const [logoLoading, setLogoLoading] = useState(false);
   
-    useEffect(() => {
-      console.log(" modal show ", show)
-    }, [show])
-  
+ 
     const insertProject = async (data: any) => {
       insertData(data)
   
@@ -50,8 +48,8 @@ const LogoCreateModal: React.FC<LogoCreateModalProps> = ({ show, onClose }) => {
     };
   
     const goToLogoPge = async () => {
-      if (selectedTitle.length == 0 || selectedDesc.length == 0) {
-        alert("Select the Title and Description!")
+      if (selectedTitle.length === 0 || selectedDesc.length === 0) {
+        infoAlert("Select the Title and Description!")
         return false
       }
       setStep(3)
@@ -59,7 +57,7 @@ const LogoCreateModal: React.FC<LogoCreateModalProps> = ({ show, onClose }) => {
   
     const generateTitleDesc = async () => {
       if (description.length == 0) {
-        alert("Input a short description!")
+        infoAlert("Input a short description!")
         return false
       }
       setStep(2)
@@ -109,7 +107,7 @@ const LogoCreateModal: React.FC<LogoCreateModalProps> = ({ show, onClose }) => {
   
     const generateLogo = async () => {
       if (selectedTitle.length == 0 || selectedDesc.length == 0) {
-        alert("select the items!");
+        infoAlert("Please select the items!");
         return false;
       }
       setLogoLoading(true);
@@ -129,8 +127,6 @@ const LogoCreateModal: React.FC<LogoCreateModalProps> = ({ show, onClose }) => {
       let newProject: ProjectType = { title: newTitle, description: newdescription, logourl: newLogoDalleUrl }
       if (selectedLogo.length == 0) {
         newProject = { title: newTitle, description: newdescription }
-        // alert("Please Make your Logo!")
-        // return false
       }
   
       insertProject(newProject)
@@ -168,7 +164,7 @@ const LogoCreateModal: React.FC<LogoCreateModalProps> = ({ show, onClose }) => {
               <textarea
                 className="border border-gray-300 p-2 mb-4 rounded-md w-full"
                 placeholder="Enter description"
-                rows={4}
+                rows={12}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
@@ -308,7 +304,10 @@ const LogoCreateModal: React.FC<LogoCreateModalProps> = ({ show, onClose }) => {
               </button>
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                onClick={() => saveProject(selectedTitle, selectedDesc, selectedLogo)}
+                onClick={() => {
+                  saveProject(selectedTitle, selectedDesc, selectedLogo)
+                  successAlert("New project is successfully created!")
+                }}
               >
                 Save
               </button>

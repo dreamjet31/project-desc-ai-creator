@@ -1,8 +1,9 @@
 "use client"
 import { readAllData } from '@/utils/supabaseClient';
 import { useState, useEffect } from 'react';
-import Modal from '../components/LogoCreateModal';
+import LogoCreateModal from '../components/LogoCreateModal';
 import ProjectsListTable from '@/components/ProjectsListTable';
+import { Toaster } from 'react-hot-toast';
 
 const columns = ['ID', 'Title', 'Description', 'LogoUrl'];
 
@@ -11,20 +12,19 @@ const Home: React.FC = () => {
   const [projectList, setProjectList] = useState<any>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await readAllData();
-        if (data) {
-          setProjectList(data);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
     fetchData();
   }, []);
 
+  const fetchData = async () => {
+    try {
+      const data = await readAllData();
+      if (data) {
+        setProjectList(data);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
   const openModal = () => {
     console.log("create button clicked...")
     setShowModal(true);
@@ -53,11 +53,16 @@ const Home: React.FC = () => {
         </button>
       </div>
 
-      <ProjectsListTable data={projectList} columns={columns} />
+      <ProjectsListTable projectList={projectList} setProjectList={setProjectList} columns={columns} />
       {
         showModal &&
-        <Modal show={showModal} onClose={closeModal} />
+        <LogoCreateModal show={showModal} onClose={() => {
+          closeModal();
+          fetchData()
+        }}
+        />
       }
+      <Toaster />
     </main>
   );
 };

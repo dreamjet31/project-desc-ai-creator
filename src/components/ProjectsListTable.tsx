@@ -1,22 +1,29 @@
 import React from 'react';
 import { deleteData } from '../utils/supabaseClient';
+import { infoAlert, successAlert } from './Alert';
 
 interface ProjectsListTableProps {
-  data: any[];
+  projectList: any[];
+  setProjectList: (projectList: any[]) => void;
   columns: string[];
 }
 
-const ProjectsListTable: React.FC<ProjectsListTableProps> = ({ data, columns }) => {
+
+  const ProjectsListTable: React.FC<ProjectsListTableProps> = ({ projectList, columns, setProjectList }) => {
   /**
    * The function `deleteProject` is used to delete a project from a database table after confirming with
    * the user.
    * @param {number} id - The `id` parameter is a number that represents the unique identifier of the
    * project that you want to delete.
    */
-  const deleteProject = async (id: number) => {
+  const handleDelete = async (id: number, tableRowNumber: number) => {
     const confirmed = window.confirm("Are you sure you want to delete this item?");
     if (confirmed) {
-      deleteData(id);
+      await deleteData(id);
+      const newArray = projectList.filter((_, index) => index !== tableRowNumber);
+      // Update the state with the new array
+      setProjectList(newArray);
+      successAlert("The project is successfully deleted!")
     }
   };
 
@@ -42,12 +49,12 @@ const ProjectsListTable: React.FC<ProjectsListTableProps> = ({ data, columns }) 
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {data.map((row, rowIndex) => (
+          {projectList.map((row, rowIndex) => (
             <tr className="text-black cursor-pointer" key={rowIndex}>
               {columns.map((column, colIndex) => (
                 <td
                   key={colIndex}
-                  className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                  className="px-6 py-4 text-sm text-gray-500"
                   onClick={() => handleClick(row["id"])}
                 >
                   {column.toLowerCase() === "id"
@@ -71,7 +78,7 @@ const ProjectsListTable: React.FC<ProjectsListTableProps> = ({ data, columns }) 
                 <button
                   className="text-red-500"
                   onClick={
-                    () => deleteProject(row['id'])
+                    () => handleDelete(row['id'], rowIndex)
                   }
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="red">
