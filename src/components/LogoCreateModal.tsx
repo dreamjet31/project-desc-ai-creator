@@ -1,3 +1,4 @@
+"use client"
 import { useState, useEffect } from 'react';
 import { insertData } from '@/utils/supabaseClient';
 import DropdownComponent from './dropdownComponent';
@@ -14,7 +15,7 @@ interface ProjectType {
     id?: number;
     title: string;
     description: string;
-    logoUrl?: string;
+    logourl?: string;
 }
 
 const LogoCreateModal: React.FC<LogoCreateModalProps> = ({ show, onClose }) => {
@@ -38,6 +39,9 @@ const LogoCreateModal: React.FC<LogoCreateModalProps> = ({ show, onClose }) => {
     const [logoFamousName, setLogoFamousName] = useState<string>("");
     const [logoLoading, setLogoLoading] = useState(false);
   
+    useEffect(() => {
+      console.log(" modal show ", show)
+    }, [show])
   
     const insertProject = async (data: any) => {
       insertData(data)
@@ -109,8 +113,9 @@ const LogoCreateModal: React.FC<LogoCreateModalProps> = ({ show, onClose }) => {
         return false;
       }
       setLogoLoading(true);
-      const prompt = logoType + " for a project that the title and the description are '" +
-        selectedTitle + "' and '" + selectedDesc + "', " +
+      // An lettermark of the main idea of the project that the title and the description are "a happy family" and "this is project is about our stratege to make the world as a family", simple, logo, gradient, pop art, leonardo divinchi
+      const prompt = logoType + "of the main idea of the project that the title and the description are '" +
+        selectedTitle + "' and '" + selectedDesc + "', simple, logo, " +
         logoStyle + ", " + logoArtTech + ", " + logoSpecInst + ", " + logoArtGenre + ", " + logoFamousName + ".";
   
       const responseLogoUrl = await generateImage(prompt);
@@ -121,7 +126,7 @@ const LogoCreateModal: React.FC<LogoCreateModalProps> = ({ show, onClose }) => {
     }
   
     const saveProject = async (newTitle: string, newdescription: string, newLogoDalleUrl: string) => {
-      let newProject: ProjectType = { title: newTitle, description: newdescription, logoUrl: newLogoDalleUrl }
+      let newProject: ProjectType = { title: newTitle, description: newdescription, logourl: newLogoDalleUrl }
       if (selectedLogo.length == 0) {
         newProject = { title: newTitle, description: newdescription }
         // alert("Please Make your Logo!")
@@ -287,7 +292,7 @@ const LogoCreateModal: React.FC<LogoCreateModalProps> = ({ show, onClose }) => {
                 <div className="w-full h-60vh bg-gray-300 mt-4">
                   {/* ImageViewerComponent or placeholder */}
                   <div className="bg-gray-200 h-full w-full flex items-center justify-center">
-                    <Image src={selectedLogo} alt="Image from DALL·E" width={600} height={600} />
+                    <img src={selectedLogo} alt="Image from DALL·E" width={600} height={600} />
                   </div>
                 </div>
               </div>
