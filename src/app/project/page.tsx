@@ -2,8 +2,8 @@
 import { readOneData } from '@/utils/supabaseClient';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import WPModal from '../../components/wpModal';
-import MCModal from '../../components/mcModal';
+import WPModal from '../../components/WhitePaperModal';
+import MCModal from '../../components/MarketingContentModal';
 
 const ProjectDetail: React.FC = () => {
   let project_id = "";

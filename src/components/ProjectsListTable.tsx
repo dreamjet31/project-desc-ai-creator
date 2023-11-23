@@ -1,20 +1,18 @@
 import React from 'react';
 import { deleteData } from '../utils/supabaseClient';
-import Image from 'next/image';
-import Link from 'next/link';
 
-interface DataTableProps {
+interface ProjectsListTableProps {
   data: any[];
   columns: string[];
 }
 
-const DataTable: React.FC<DataTableProps> = ({ data, columns }) => {
-/**
- * The function `deleteProject` is used to delete a project from a database table after confirming with
- * the user.
- * @param {number} id - The `id` parameter is a number that represents the unique identifier of the
- * project that you want to delete.
- */
+const ProjectsListTable: React.FC<ProjectsListTableProps> = ({ data, columns }) => {
+  /**
+   * The function `deleteProject` is used to delete a project from a database table after confirming with
+   * the user.
+   * @param {number} id - The `id` parameter is a number that represents the unique identifier of the
+   * project that you want to delete.
+   */
   const deleteProject = async (id: number) => {
     const confirmed = window.confirm("Are you sure you want to delete this item?");
     if (confirmed) {
@@ -63,7 +61,7 @@ const DataTable: React.FC<DataTableProps> = ({ data, columns }) => {
                           width={50}
                           height={50}
                         />
-                      // <Image src={row[column.toLowerCase()]} alt="Image from DALL·E" width={50} height={50} />
+                        // <Image src={row[column.toLowerCase()]} alt="Image from DALL·E" width={50} height={50} />
                       )
                     )
                   }
@@ -77,8 +75,8 @@ const DataTable: React.FC<DataTableProps> = ({ data, columns }) => {
                   }
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="red">
-                    <path d="M16.5 6.9h-1.4V5.5c0-.6-.4-1-1-1H5.9c-.6 0-1 .4-1 1v1.4H3c-.6 0-1 .4-1 1s.4 1 1 1h1.5l1.6 10.6c0 .6.5 1 1 1h6c.6 0 1-.4 1-1L15.5 9.9h1.5c.6 0 1-.4 1-1s-.5-1-1.1-1zM8.4 6.5h3.2l-.6 3.2H9l-.6-3.2zM14 17H6l-1.3-8.6H15.3L14 17zm-4-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4-1a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-                </svg>
+                    <path d="M16.5 6.9h-1.4V5.5c0-.6-.4-1-1-1H5.9c-.6 0-1 .4-1 1v1.4H3c-.6 0-1 .4-1 1s.4 1 1 1h1.5l1.6 10.6c0 .6.5 1 1 1h6c.6 0 1-.4 1-1L15.5 9.9h1.5c.6 0 1-.4 1-1s-.5-1-1.1-1zM8.4 6.5h3.2l-.6 3.2H9l-.6-3.2zM14 17H6l-1.3-8.6H15.3L14 17zm-4-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4-1a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                  </svg>
 
                 </button>
               </td>
@@ -90,4 +88,4 @@ const DataTable: React.FC<DataTableProps> = ({ data, columns }) => {
   );
 };
 
-export default DataTable;
+export default ProjectsListTable;

@@ -5,7 +5,7 @@ import { generateText } from '../utils/openaiAPI';
 import { generateImage } from '@/utils/dalleAPI';
 import Image from 'next/image';
 
-interface ModalProps {
+interface LogoCreateModalProps {
     show: boolean;
     onClose: () => void;
 }
@@ -17,7 +17,7 @@ interface ProjectType {
     logoUrl?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ show, onClose }) => {
+const LogoCreateModal: React.FC<LogoCreateModalProps> = ({ show, onClose }) => {
     const [description, setDescription] = useState('');
     const [step, setStep] = useState(1);
     const [projectData, setProjectData] = useState<any>({ title: [], description: [] })
@@ -316,4 +316,4 @@ const Modal: React.FC<ModalProps> = ({ show, onClose }) => {
     );
   };
 
-export default Modal;
+export default LogoCreateModal;

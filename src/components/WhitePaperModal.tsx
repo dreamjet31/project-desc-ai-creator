@@ -11,7 +11,7 @@ interface ModalProps {
 }
   
 
-const WPModal: React.FC<ModalProps> = ({ show, onClose }) => {
+const WhitePaperModal: React.FC<ModalProps> = ({ show, onClose }) => {
     const [projectInfo, setProjectInfo] = useState<any>();
     
     const [sectionListItems, setSectionListItems] = useState<string[]>([]); //sections
@@ -312,4 +312,4 @@ const WPModal: React.FC<ModalProps> = ({ show, onClose }) => {
     );
   };
 
-export default WPModal;
+export default WhitePaperModal;

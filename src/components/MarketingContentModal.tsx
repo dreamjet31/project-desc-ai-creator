@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import DropdownComponent from './dropdownComponent';
-import { generateImage } from '@/utils/dalleAPI';
-import Image from 'next/image';
+// import { generateImage } from '@/utils/dalleAPI';
+// import Image from 'next/image';
 import { generateText } from '../utils/openaiAPI';
 
 interface ModalProps {
@@ -9,14 +9,14 @@ interface ModalProps {
     onClose: () => void;
 }
   
-interface ProjectType {
-    id?: number;
-    title: string;
-    description: string;
-    logoUrl: string;
-}
+// interface ProjectType {
+//     id?: number;
+//     title: string;
+//     description: string;
+//     logoUrl: string;
+// }
 
-const MCModal: React.FC<ModalProps> = ({ show, onClose }) => {
+const MarketingContentModal: React.FC<ModalProps> = ({ show, onClose }) => {
     const [description, setDescription] = useState('');
     const [marketContentType, setMarketContentType] = useState<string>('tweet');
     const [preview, setPreview] = useState('');
@@ -37,7 +37,6 @@ const MCModal: React.FC<ModalProps> = ({ show, onClose }) => {
     
     const saveContent = async () => {
       // save preview
-      
       onClose();
       alert("Successfully saved!")
     }
@@ -120,4 +119,4 @@ const MCModal: React.FC<ModalProps> = ({ show, onClose }) => {
     );
   };
 
-export default MCModal;
+export default MarketingContentModal;
