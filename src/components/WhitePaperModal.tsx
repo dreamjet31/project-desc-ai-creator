@@ -4,6 +4,7 @@ import DropdownComponent from './dropdownComponent';
 import { generateImage } from '@/utils/dalleAPI';
 import Image from 'next/image';
 import { generateText } from '../utils/openaiAPI';
+import {PROMPT_EXAMPLE} from '../constants/promts.constant'
 
 interface ModalProps {
     show: boolean;
@@ -146,17 +147,7 @@ const WhitePaperModal: React.FC<ModalProps> = ({ show, onClose }) => {
     const generateSectCont = async (title: string, description: string) => {
         // console.log("title&description", title, "&",description)
         setSpinner(true)
-        let prompt=`Create 10 distinct sections, each containing 10 pieces of content related to the project centered around the title and description as '${title}' and '${description}' respectively. Replace the placeholder values in 'type'.
-
-        Ensure the following:
-        1. The sections must not be labeled with the word 'section'.
-        2. The content within each section should not include the term 'content'.
-        3. The result shouldn't include 'section', 'content'.
-        
-        Display the result below the 'type' structure:
-        { 
-          "section1":["content1","content2", "content3", "content4", "content5", "content6", "content7", "content8", "content9", "content10"],
-        }`
+        let prompt = `The title and description of project are ${title} and ${description}.\n` + PROMPT_EXAMPLE;
         try {
         // send a prompt
         const response: string | null = await generateText(prompt);
@@ -171,7 +162,7 @@ const WhitePaperModal: React.FC<ModalProps> = ({ show, onClose }) => {
 
           if (response !== null) {
             let data: Record<string, string[]> = JSON.parse(response);
-            if (Object.entries(data).length<1)  throw new Error('The number of entries in "data" is less than 10.');
+            if (Object.entries(data).length<5)  throw new Error('The number of entries in "data" is less than 10.');
             Object.entries(data).forEach(([key, value]) => {
               const sectionKey: string = key;
               const sectionValue: string[] = value;
@@ -188,27 +179,6 @@ const WhitePaperModal: React.FC<ModalProps> = ({ show, onClose }) => {
         } catch (error) {
           alert("Gpt api is not working well. please generate again.")
         }
-
-        // const sections = ['happy family', 'happy factory', 'happy family', 'happy factory', 'happy family', 'happy factory']
-        // const contents = [[ 'this is the project that is called "happy family"',
-        //                     'this is the project that is called "happy society"',
-        //                     'this is the project that is called "happy factory"'],
-        //                     ['qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"',
-        //                      'this is the project that is called "happy society"',
-        //                      'this is the project that is called "happy factory"',],
-        //                      ['aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"',
-        //                       'this is the project that is called "happy society"',
-        //                       'this is the project that is called "happy factory"',],
-        //                       ['zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"',
-        //                        'this is the project that is called "happy society"',
-        //                        'this is the project that is called "happy factory"',],
-        //                        ['aqaqaqaaqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"',
-        //                         'this is the project that is called "happy society"',
-        //                         'this is the project that is called "happy factory"',],
-        //                         ['xaxaxaxaxaxaxaxaxaxaxaxahat is called "happy family"',
-        //                          'this is the project that is called "happy society"',
-        //                          'this is the project that is called "happy factory"',]]
-        
 
         setSpinner(false)
     };
