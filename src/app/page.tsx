@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Modal from '../components/LogoCreateModal';
 import ProjectsListTable from '@/components/ProjectsListTable';
 
+const columns = ['ID', 'Title', 'Description', 'LogoUrl'];
 
 const Home: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -12,7 +13,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await readAllData(); 
+        const data = await readAllData();
         if (data) {
           setProjectList(data);
         }
@@ -20,11 +21,12 @@ const Home: React.FC = () => {
         console.error('Error fetching data:', error);
       }
     };
-  
+
     fetchData();
   }, []);
 
   const openModal = () => {
+    console.log("create button clicked...")
     setShowModal(true);
   };
 
@@ -32,14 +34,14 @@ const Home: React.FC = () => {
     setShowModal(false);
   };
 
-  const columns = ['ID', 'Title', 'Description', 'LogoUrl'];
-
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
       <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
         <button
           className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          onClick={openModal}
+          onClick={() => {
+            openModal()
+          }}
         >
           <h2 className="mb-3 text-2xl font-semibold">
             Create{' '}
@@ -52,7 +54,10 @@ const Home: React.FC = () => {
       </div>
 
       <ProjectsListTable data={projectList} columns={columns} />
-      <Modal show={showModal} onClose={closeModal} />
+      {
+        showModal &&
+        <Modal show={showModal} onClose={closeModal} />
+      }
     </main>
   );
 };

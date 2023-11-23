@@ -8,7 +8,6 @@ import MCModal from '../../components/MarketingContentModal';
 const ProjectDetail: React.FC = () => {
   let project_id = "";
   if (typeof window !== 'undefined') {
-    // Your code that uses `window` object
     project_id = window.location.href.split("/project?")[1];
   }
   const [showWPModal, setShowWPModal] = useState(false);
@@ -18,17 +17,16 @@ const ProjectDetail: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await readOneData(parseInt(project_id)); // Assuming readAllData is an async function that returns a Promise
+        const data = await readOneData(parseInt(project_id));
         if (data) {
           setProjectInfo(data);
         }
       } catch (error) {
-        // Handle errors if any occurred during fetching or processing data
         console.error('Error fetching data:', error);
       }
     };
   
-    fetchData(); // Call the async function to fetch data
+    fetchData(); 
   }, [project_id]);
 
   const openWPModal = () => {
