@@ -17,16 +17,19 @@ const MarketingContentModal: React.FC<ModalProps> = ({ show, onClose }) => {
   const [spinner, setSpinner] = useState(false);
 
   const applyContent = async () => {
+    console.log("description", description.length)
     if (description.length === 0) {
-      return false
-    }
-    let prompt = `Create marketing content centered on '${description}' in '${marketContentType}' way.`
-    setSpinner(true)
-    const response: string | null = await generateText(prompt);
-    if (response)
-      setPreview(response);
+      infoAlert("You should type description")
+    } else {
+      let prompt = `Create marketing content centered on '${description}' in '${marketContentType}' way.`
+      setSpinner(true)
+      const response: string | null = await generateText(prompt);
+      if (response)
+        setPreview(response);
 
-    setSpinner(false)
+      setSpinner(false)
+    }
+
   }
 
   const saveContent = async () => {
@@ -59,6 +62,14 @@ const MarketingContentModal: React.FC<ModalProps> = ({ show, onClose }) => {
             />
           </div>
         </div>
+        <div className="flex justify-end mt-4">
+          <button
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
+            onClick={applyContent}
+          >
+            Apply
+          </button>
+        </div>
         <div>
           {/* Preview Section */}
           <div className="flex-1">
@@ -72,27 +83,22 @@ const MarketingContentModal: React.FC<ModalProps> = ({ show, onClose }) => {
                 </div>
 
               ) : (
-                <div className="border border-gray-300 p-3 h-40">
-                  <textarea
-                    className="border border-gray-300 p-2 mb-4 rounded-md w-full"
-                    placeholder="Enter description"
-                    rows={4}
-                    value={preview}
-                    onChange={(e) => setDescription(e.target.value)}
-                  />
-                </div>)}
+                // <div className="border border-gray-300 p-3 h-40">
+                <textarea
+                  className="border border-gray-300 p-2 mb-4 rounded-md w-full"
+                  placeholder="Enter description"
+                  rows={7}
+                  value={preview}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+                // </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Buttons */}
         <div className="flex justify-end mt-4">
-          <button
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
-            onClick={applyContent}
-          >
-            Apply
-          </button>
           <button
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2"
             onClick={onClose}
