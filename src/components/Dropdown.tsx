@@ -1,12 +1,18 @@
 import React, { ChangeEvent } from 'react';
 
-interface DropdownProps {
+interface IDropdownProps {
   label: string;
   options: string[];
   onSelectOption: (selectedOption: string) => void;
 }
 
-const DropdownComponent: React.FC<DropdownProps> = ({ label, options, onSelectOption }) => {
+const Dropdown: React.FC<IDropdownProps> = ({ label, options, onSelectOption }) => {
+  /**
+   * The handleSelect function is a TypeScript function in a React component that handles the selection
+   * of an option from a dropdown menu.
+   * @param e - The parameter `e` is of type `ChangeEvent<HTMLSelectElement>`. This means it is an event
+   * object that is triggered when the value of a `<select>` element changes.
+   */
   const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedOption = e.target.value;
     onSelectOption(selectedOption);
@@ -26,4 +32,4 @@ const DropdownComponent: React.FC<DropdownProps> = ({ label, options, onSelectOp
   );
 };
 
-export default DropdownComponent;
+export default Dropdown;

@@ -1,37 +1,42 @@
 import { useState, useEffect } from 'react';
-import DropdownComponent from './dropdownComponent';
-// import { generateImage } from '@/utils/dalleAPI';
-// import Image from 'next/image';
-import { generateText } from '../utils/openaiAPI';
+import DropdownComponent from './Dropdown';
+import { generateText } from '../utils/generateText';
 import { infoAlert, successAlert } from './Alert';
 
-interface ModalProps {
+interface IModalProps {
   show: boolean;
   onClose: () => void;
 }
 
-const MarketingContentModal: React.FC<ModalProps> = ({ show, onClose }) => {
-  const [description, setDescription] = useState('');
+const MarketingContentModal: React.FC<IModalProps> = ({ show, onClose }) => {
+  const [description, setDescription] = useState<string>('');
   const [marketContentType, setMarketContentType] = useState<string>('tweet');
   const [preview, setPreview] = useState('');
   const [spinner, setSpinner] = useState(false);
 
-  const applyContent = async () => {
-    console.log("description", description.length)
-    if (description.length === 0) {
-      infoAlert("You should type description")
+  /**
+   * The function `generateContent` checks if a description is provided and generates marketing content
+   * based on the description if it is not empty.
+   */
+  const generateContent = async () => {
+    console.log("description", description)
+    if (description === "") {
+      console.log("hey")
+      alert("You should type description")
     } else {
       let prompt = `Create marketing content centered on '${description}' in '${marketContentType}' way.`
       setSpinner(true)
       const response: string | null = await generateText(prompt);
       if (response)
         setPreview(response);
-
       setSpinner(false)
     }
-
   }
 
+  /**
+   * The function `saveContent` closes a modal and displays a success alert message indicating that
+   * marketing content has been successfully created.
+   */
   const saveContent = async () => {
     onClose();
     successAlert("Marketing Content is successfully created!")
@@ -65,7 +70,7 @@ const MarketingContentModal: React.FC<ModalProps> = ({ show, onClose }) => {
         <div className="flex justify-end mt-4">
           <button
             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
-            onClick={applyContent}
+            onClick={generateContent}
           >
             Apply
           </button>
@@ -83,7 +88,6 @@ const MarketingContentModal: React.FC<ModalProps> = ({ show, onClose }) => {
                 </div>
 
               ) : (
-                // <div className="border border-gray-300 p-3 h-40">
                 <textarea
                   className="border border-gray-300 p-2 mb-4 rounded-md w-full"
                   placeholder="Enter description"
@@ -91,7 +95,6 @@ const MarketingContentModal: React.FC<ModalProps> = ({ show, onClose }) => {
                   value={preview}
                   onChange={(e) => setDescription(e.target.value)}
                 />
-                // </div>
               )}
             </div>
           </div>

@@ -1,29 +1,34 @@
 import React from 'react';
-import { deleteData } from '../utils/supabaseClient';
-import { infoAlert, successAlert } from './Alert';
+import { successAlert } from './Alert';
 
-interface ProjectsListTableProps {
-  projectList: any[];
-  setProjectList: (projectList: any[]) => void;
+interface IProjectsListTableProps {
+  projectList: IProject[];
+  setProjectList: (projectList: IProject[]) => void;
   columns: string[];
 }
 
 
-  const ProjectsListTable: React.FC<ProjectsListTableProps> = ({ projectList, columns, setProjectList }) => {
-  /**
-   * The function `deleteProject` is used to delete a project from a database table after confirming with
-   * the user.
-   * @param {number} id - The `id` parameter is a number that represents the unique identifier of the
-   * project that you want to delete.
-   */
+const ProjectsListTable: React.FC<IProjectsListTableProps> = ({ projectList, columns, setProjectList }) => {
   const handleDelete = async (id: number, tableRowNumber: number) => {
     const confirmed = window.confirm("Are you sure you want to delete this item?");
     if (confirmed) {
-      await deleteData(id);
-      const newArray = projectList.filter((_, index) => index !== tableRowNumber);
-      // Update the state with the new array
-      setProjectList(newArray);
-      successAlert("The project is successfully deleted!")
+      await fetch(`/api/supabase/users/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((res) => {
+          if (res.status === 200) {
+            const newArray = projectList.filter((_, index) => index !== tableRowNumber);
+            // Update the state with the new array
+            setProjectList(newArray);
+            successAlert("The project is successfully deleted!")
+          }
+        })
+        .catch((err) => {
+          console.log("err", err)
+        })
     }
   };
 
@@ -36,7 +41,7 @@ interface ProjectsListTableProps {
       <table className="min-w-full border border-gray-200 divide-y divide-gray-200">
         <thead className="bg-slate-600 ">
           <tr>
-            {columns.map((column, index) => (
+            {columns.map((column: string, index) => (
               <th
                 key={index}
                 scope="col"
@@ -49,26 +54,30 @@ interface ProjectsListTableProps {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {projectList.map((row, rowIndex) => (
+          {projectList && projectList.length > 0 && projectList.map((row: IProject, rowIndex: number) => (
+
             <tr className="text-black cursor-pointer" key={rowIndex}>
               {columns.map((column, colIndex) => (
                 <td
                   key={colIndex}
                   className="px-6 py-4 text-sm text-gray-500"
-                  onClick={() => handleClick(row["id"])}
+                  onClick={() => {
+                    if (row.id !== undefined) {
+                      handleClick(row.id)
+                    }
+                  }}
                 >
                   {column.toLowerCase() === "id"
                     ? rowIndex + 1
-                    : (column.toLowerCase() !== "logourl"
-                      ? row[column.toLowerCase()]
+                    : (column !== "logourl"
+                      ? row[column as keyof IProject] // explicitly cast to the correct key type
                       : (
                         <img
-                          src={row[column.toLowerCase()]}
+                          src={row[column as keyof IProject] as string} // explicitly cast to string
                           alt="Image from DALL·E"
                           width={50}
                           height={50}
                         />
-                        // <Image src={row[column.toLowerCase()]} alt="Image from DALL·E" width={50} height={50} />
                       )
                     )
                   }
@@ -78,7 +87,11 @@ interface ProjectsListTableProps {
                 <button
                   className="text-red-500"
                   onClick={
-                    () => handleDelete(row['id'], rowIndex)
+                    () => {
+                      if (row.id !== undefined) {
+                        handleDelete(row.id, rowIndex)
+                      }
+                    }
                   }
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="red">

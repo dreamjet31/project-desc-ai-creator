@@ -1,5 +1,6 @@
-const PROMPT_EXAMPLE = 
-    `Create 10 different sections and 10 different pieces of content for each section that will be used to create a white paper for this project. 
+const PROMPT_EXAMPLE =
+`
+    Create 10 different sections and 10 different pieces of content for each section that will be used to create a white paper for this project. 
     Please output in the format below:
     { 
         section's name:[content's names, ...],
@@ -17,8 +18,7 @@ const PROMPT_EXAMPLE =
         "Create a small film firm for collaborative film production with renowned actors and studios.",
         "Provide invited studios with discounted film machines to incentivize collaboration."
     ],
-    `
-    
+`
 
 export {
     PROMPT_EXAMPLE

@@ -15,7 +15,8 @@
     "openai": "^4.20.0",
     "react": "^18",
     "react-dom": "^18",
-    "react-hot-toast": "^2.4.1"
+    "react-hot-toast": "^2.4.1",
+    "superagent": "^8.1.2"
   },
   "devDependencies": {
     "@types/node": "^20",

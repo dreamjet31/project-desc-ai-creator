@@ -1,32 +1,37 @@
 "use client"
-import { readAllData } from '@/utils/supabaseClient';
 import { useState, useEffect } from 'react';
 import LogoCreateModal from '../components/LogoCreateModal';
 import ProjectsListTable from '@/components/ProjectsListTable';
 import { Toaster } from 'react-hot-toast';
+import axios from 'axios';
 
-const columns = ['ID', 'Title', 'Description', 'LogoUrl'];
+const columns = ['id', 'title', 'description', 'logoUrl'];
 
 const Home: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
-  const [projectList, setProjectList] = useState<any>([]);
+  const [projectList, setProjectList] = useState<IProject[]>([]);
 
   useEffect(() => {
     fetchData();
   }, []);
 
+  /**
+   * The function fetchData is an asynchronous function that fetches data from a specified API endpoint
+   * and sets the project list state with the retrieved data.
+   */
   const fetchData = async () => {
     try {
-      const data = await readAllData();
+      const { data } = await axios.get("/api/supabase/users");
       if (data) {
-        setProjectList(data);
+        setProjectList(data.data);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
     }
+
   };
+
   const openModal = () => {
-    console.log("create button clicked...")
     setShowModal(true);
   };
 
